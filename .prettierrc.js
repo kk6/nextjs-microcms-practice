@@ -1,4 +1,5 @@
 module.exports = {
-  "semi": false,
+  semi: false,
   "no-extra-semi": "error",
+  singleQuote: false
 }

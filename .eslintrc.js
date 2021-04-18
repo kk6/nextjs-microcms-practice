@@ -1,12 +1,18 @@
 module.exports = {
-  extends: ["eslint:recommended"],
+  root: true,
+  parser: "@typescript-eslint/parser",
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   env: {
     browser: true,
     node: true,
-    es6: true,
+    es6: true
   },
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2020
   },
   overrides: [
     {
@@ -15,21 +21,21 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier/@typescript-eslint",
+        "prettier"
       ],
       parser: "@typescript-eslint/parser",
       settings: {
         react: {
           pragma: "React",
-          version: "detect",
-        },
+          version: "detect"
+        }
       },
       parserOptions: {
         sourceType: "module",
         project: "./tsconfig.json",
         ecmaFeatures: {
-          jsx: true,
-        },
+          jsx: true
+        }
       },
       plugins: ["@typescript-eslint", "react", "react-hooks", "import"],
       rules: {
@@ -42,26 +48,26 @@ module.exports = {
               {
                 pattern: "react",
                 group: "external",
-                position: "before",
-              },
+                position: "before"
+              }
             ],
             pathGroupsExcludedImportTypes: ["react"],
             "newlines-between": "always",
             alphabetize: {
               order: "asc",
-              caseInsensitive: true,
-            },
-          },
+              caseInsensitive: true
+            }
+          }
         ],
         "@typescript-eslint/no-unused-vars": "error",
         "react/jsx-no-target-blank": "error",
         "react/prop-types": "off",
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "error",
-      },
-    },
+        "react-hooks/exhaustive-deps": "error"
+      }
+    }
   ],
   globals: {
-    React: "writable",
-  },
-};
+    React: "writable"
+  }
+}

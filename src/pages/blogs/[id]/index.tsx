@@ -1,19 +1,25 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
-import Link from "next/link";
-import { BlogResponse } from "../../../types/blog";
-import { client } from "../../../utils/api";
-import { toStringId } from "../../../utils/toStringId";
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+  NextPage
+} from "next"
+import { useRouter } from "next/dist/client/router"
+import Link from "next/link"
+
+import { BlogResponse } from "../../../types/blog"
+import { client } from "../../../utils/api"
+import { toStringId } from "../../../utils/toStringId"
 
 type StaticProps = {
-  blog: BlogResponse;
-  draftKey?: string;
-};
-type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
+  blog: BlogResponse
+  draftKey?: string
+}
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>
 
-const Page: NextPage<PageProps> = (props) => {
-  const { blog, draftKey } = props;
-  const router = useRouter();
+const Page: NextPage<PageProps> = props => {
+  const { blog, draftKey } = props
+  const router = useRouter()
 
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -41,7 +47,7 @@ const Page: NextPage<PageProps> = (props) => {
               <li>
                 tag:
                 <ul>
-                  {blog.tags.map((tag) => (
+                  {blog.tags.map(tag => (
                     <li key={tag.id}>
                       <Link href={`/tags/${tag.id}`}>{tag.name}</Link>
                     </li>
@@ -56,42 +62,42 @@ const Page: NextPage<PageProps> = (props) => {
         )}
       </main>
     </>
-  );
-};
+  )
+}
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     fallback: "blocking",
-    paths: [],
-  };
-};
+    paths: []
+  }
+}
 
-export const getStaticProps: GetStaticProps<StaticProps> = async (context) => {
-  const { params, previewData } = context;
+export const getStaticProps: GetStaticProps<StaticProps> = async context => {
+  const { params, previewData } = context
 
   if (!params?.id) {
-    throw new Error("Error: ID not found");
+    throw new Error("Error: ID not found")
   }
 
-  const id = toStringId(params.id);
+  const id = toStringId(params.id)
   const draftKey = previewData?.draftKey
     ? { draftKey: previewData.draftKey }
-    : {};
+    : {}
 
   try {
     const blog = await client.v1.blogs._id(id).$get({
       query: {
         fields: "id,title,body,publishedAt,tags",
-        ...draftKey,
-      },
-    });
+        ...draftKey
+      }
+    })
     return {
       props: { blog, ...draftKey },
-      revalidate: 60,
-    };
+      revalidate: 60
+    }
   } catch (e) {
-    return { notFound: true}
+    return { notFound: true }
   }
-};
+}
 
-export default Page;
+export default Page

@@ -1,5 +1,5 @@
-import { ContentResponse } from "./api";
+import { ContentResponse } from "./api"
 
 export type SiteDataResponse = ContentResponse<{
-  title?: string;
-}>;
+  title?: string
+}>
